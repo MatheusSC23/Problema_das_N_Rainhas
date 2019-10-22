@@ -28,9 +28,10 @@ class Genetico:
 		            break
 		return tab,queensPosition
 
-	def calAtaque(estado):
+	def calAtaque(self):
 	    at=0
 	    atlinhas = 0
+	    estado = copy.deepcopy(self.tab)
 	    for i in estado: 
 	        #ataque em linhas
 	        if sum(i)>1:
@@ -46,34 +47,51 @@ class Genetico:
 	    at+=atcolunas
 	    pr = self.queensPosition
 	    d = 0
-	    for p,coords in enumerate(pr):
+	    print(pr)
+	    for coords in pr:
 	        i,j = coords
 	        #diagonal inferior esquerda
 	        k,w = i+1,j-1
-	        while(w>=0 and k<len(estado)):
+	        conflict = False
+	        while(w>=0 and k<len(estado) and not conflict):
 	            if estado[k][w]==1:
 	                d+=1
+	                conflict = True
 	            w-=1
 	            k+=1
 
 	        #diagonal superior esquerda
 	        k,w = i-1,j+1
-	        while(k>=0 and w<len(estado)):
+	        conflict = False
+	        while(k>=0 and w<len(estado) and not conflict):
 	            if estado[k][w]==1:
 	                d+=1
-	            w-=1
-	            k+=1
-	        #diagonal direita
+	                conflict = True
+	            w+=1
+	            k-=1
+	        #diagonal inferior direita
 	        l,c = i+1,j+1
-	        while(1 <len(estado) and c<len(estado)):
-	            if estado[1][c]==1:
+	        conflict = False
+	        while(l <len(estado) and c<len(estado) and not conflict):
+	            if estado[l][c]==1:
 	                d+=1
-	                break
+	                conflict = True
 	            l+=1
 	            c+=1
-	    at+=d
+	        #diagonal inferior direita
+	        l,c = i-1,j-1
+	        conflict = False
+	        while(l >= 0 and c >= 0 and not conflict):
+	            if estado[l][c]==1:
+	                d+=1
+	                conflict = True
+	            l-=1
+	            c-=1
+	    at+=d/2
 	    return at
 
 if __name__ =="__main__":
 	a = Genetico(4)
-	print(a.tab)
+	for i in a.tab:
+	    print(i)
+	print(a.calAtaque())
