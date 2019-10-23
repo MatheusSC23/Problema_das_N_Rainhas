@@ -82,7 +82,7 @@ def calAtaque(estado):
             k+=1
         #diagonal direita
         l,c = i+1,j+1
-        while(1 <len(estado) and c<len(estado)):
+        while(l <len(estado) and c<len(estado)):
             if estado[1][c]==1:
                 d+=1
                 break
